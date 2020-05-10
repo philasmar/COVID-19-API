@@ -6,7 +6,7 @@
 # def home_func():
 #     return render_template("home.html")
 import flask
-from flask import jsonify
+from flask import jsonify, request
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
@@ -29,8 +29,36 @@ engine = create_engine(db_data)
 
 @app.route('/', methods=['GET'])
 def home_func():
+    country = request.args.get('country', default = '', type = str)
+    state = request.args.get('state', default = '', type = str)
+    city = request.args.get('city', default = '', type = str)
+    # print("SELECT Date, SUM(ConfirmedDaily) FROM corona_cases WHERE Country like '" + country + "' AND State like '" + state + "' AND City like '" + city + "' GROUP BY Date");
     with engine.connect() as con:
-        rs = con.execute("SELECT Date, SUM(ConfirmedDaily) FROM corona_cases WHERE Country = 'US' GROUP BY Date")
+        sqlstatement = "SELECT Date, SUM(ConfirmedDaily) FROM corona_cases"
+        added = False
+        if country != '' or state != '' or city != '':
+            sqlstatement += " WHERE"
+        if country != '':
+            if added:
+                sqlstatement += " AND Country like '" + country + "'"
+            else:
+                sqlstatement += " Country like '" + country + "'"
+            added = True
+        if state != '':
+            if added:
+                sqlstatement += " AND State like '" + state + "'"
+            else:
+                sqlstatement += " State like '" + state + "'"
+            added = True
+        if city != '':
+            if added:
+                sqlstatement += " AND City like '" + city + "'"
+            else:
+                sqlstatement += " City like '" + city + "'"
+            added = True
+        sqlstatement += " GROUP BY Date"
+        print(sqlstatement)
+        rs = con.execute(sqlstatement)
 
         Cases = []
         for row in rs:
