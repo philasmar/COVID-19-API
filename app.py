@@ -65,7 +65,9 @@ def home_func():
             Cases.append(DailyCases(row[0], row[1]))
         results = [obj.to_dict() for obj in Cases]
         # results.sort(key=lambda obj: obj["Date"])
-        return json.dumps(results)
+        response = flask.jsonify(results)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
 
 @app.route('/countries', methods=['GET'])
 def countries():
@@ -95,7 +97,9 @@ def states():
             Cases.append(row[0])
         # results = [obj.to_dict() for obj in Cases]
         # results.sort(key=lambda obj: obj["Date"])
-        return json.dumps(Cases)
+        response = flask.jsonify(Cases)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
 
 @app.route('/cities', methods=['GET'])
 def cities():
@@ -109,7 +113,9 @@ def cities():
             Cases.append(row[0])
         # results = [obj.to_dict() for obj in Cases]
         # results.sort(key=lambda obj: obj["Date"])
-        return json.dumps(Cases)
+        response = flask.jsonify(Cases)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
 #
 #
 # # A route to return all of the available entries in our catalog.
