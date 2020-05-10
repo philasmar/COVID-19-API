@@ -28,7 +28,7 @@ engine = create_engine(db_data)
 
 
 @app.route('/', methods=['GET'])
-def home():
+def home_func():
     with engine.connect() as con:
         rs = con.execute("SELECT Date, SUM(ConfirmedDaily) FROM corona_cases WHERE Country = 'US' GROUP BY Date")
 
@@ -45,4 +45,4 @@ def home():
 # def api_all():
 #     return jsonify(books)
 #
-app.run()
+# app.run()
