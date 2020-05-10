@@ -66,6 +66,48 @@ def home_func():
         results = [obj.to_dict() for obj in Cases]
         # results.sort(key=lambda obj: obj["Date"])
         return json.dumps(results)
+
+@app.route('/countries', methods=['GET'])
+def countries():
+    with engine.connect() as con:
+        sqlstatement = "SELECT DISTINCT Country FROM corona_cases Order By Country"
+        print(sqlstatement)
+        rs = con.execute(sqlstatement)
+
+        Cases = []
+        for row in rs:
+            Cases.append(row[0])
+        # results = [obj.to_dict() for obj in Cases]
+        # results.sort(key=lambda obj: obj["Date"])
+        return json.dumps(Cases)
+
+@app.route('/states', methods=['GET'])
+def states():
+    with engine.connect() as con:
+        sqlstatement = "SELECT DISTINCT State FROM corona_cases WHERE State is not null Order By State"
+        print(sqlstatement)
+        rs = con.execute(sqlstatement)
+
+        Cases = []
+        for row in rs:
+            Cases.append(row[0])
+        # results = [obj.to_dict() for obj in Cases]
+        # results.sort(key=lambda obj: obj["Date"])
+        return json.dumps(Cases)
+
+@app.route('/cities', methods=['GET'])
+def cities():
+    with engine.connect() as con:
+        sqlstatement = "SELECT DISTINCT City FROM corona_cases WHERE City is not null Order By City"
+        print(sqlstatement)
+        rs = con.execute(sqlstatement)
+
+        Cases = []
+        for row in rs:
+            Cases.append(row[0])
+        # results = [obj.to_dict() for obj in Cases]
+        # results.sort(key=lambda obj: obj["Date"])
+        return json.dumps(Cases)
 #
 #
 # # A route to return all of the available entries in our catalog.
