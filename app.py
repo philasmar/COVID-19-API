@@ -79,7 +79,9 @@ def countries():
             Cases.append(row[0])
         # results = [obj.to_dict() for obj in Cases]
         # results.sort(key=lambda obj: obj["Date"])
-        return json.dumps(Cases)
+        response = flask.jsonify(Cases)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
 
 @app.route('/states', methods=['GET'])
 def states():
