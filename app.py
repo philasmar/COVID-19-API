@@ -14,16 +14,8 @@ from sqlalchemy import inspect
 import json
 
 app = flask.Flask(__name__)
-app.config["DEBUG"] = True
 db_data = 'mysql://admin:datascience@datascience.cm0etcbpc6gt.us-east-2.rds.amazonaws.com:3306/sys'
 
-books = [
-    {'id': 0,
-     'title': 'A Fire Upon the Deep',
-     'author': 'Vernor Vinge',
-     'first_sentence': 'The coldsleep itself was dreamless.',
-     'year_published': '1992'}
-]
 class DailyCases(object):
     def __init__(self, Date, Cases):
         self.Date = Date
