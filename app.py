@@ -71,8 +71,33 @@ def home_func():
 
 @app.route('/countries', methods=['GET'])
 def countries():
+    country = request.args.get('country', default = '', type = str)
+    state = request.args.get('state', default = '', type = str)
+    city = request.args.get('city', default = '', type = str)
     with engine.connect() as con:
-        sqlstatement = "SELECT DISTINCT Country FROM corona_cases Order By Country"
+        sqlstatement = "SELECT DISTINCT Country FROM corona_cases"
+        added = False
+        if country != '' or state != '' or city != '':
+            sqlstatement += " WHERE"
+        if country != '':
+            if added:
+                sqlstatement += " AND Country like '" + country + "'"
+            else:
+                sqlstatement += " Country like '" + country + "'"
+            added = True
+        if state != '':
+            if added:
+                sqlstatement += " AND State like '" + state + "'"
+            else:
+                sqlstatement += " State like '" + state + "'"
+            added = True
+        if city != '':
+            if added:
+                sqlstatement += " AND City like '" + city + "'"
+            else:
+                sqlstatement += " City like '" + city + "'"
+            added = True
+        sqlstatement += " Order By Country"
         print(sqlstatement)
         rs = con.execute(sqlstatement)
 
@@ -87,8 +112,18 @@ def countries():
 
 @app.route('/states', methods=['GET'])
 def states():
+    country = request.args.get('country', default = '', type = str)
+    state = request.args.get('state', default = '', type = str)
+    city = request.args.get('city', default = '', type = str)
     with engine.connect() as con:
-        sqlstatement = "SELECT DISTINCT State FROM corona_cases WHERE State is not null Order By State"
+        sqlstatement = "SELECT DISTINCT State FROM corona_cases WHERE State is not null"
+        if country != '':
+            sqlstatement += " AND Country like '" + country + "'"
+        if state != '':
+            sqlstatement += " AND State like '" + state + "'"
+        if city != '':
+            sqlstatement += " AND City like '" + city + "'"
+        sqlstatement += " Order By State"
         print(sqlstatement)
         rs = con.execute(sqlstatement)
 
@@ -103,8 +138,18 @@ def states():
 
 @app.route('/cities', methods=['GET'])
 def cities():
+    country = request.args.get('country', default = '', type = str)
+    state = request.args.get('state', default = '', type = str)
+    city = request.args.get('city', default = '', type = str)
     with engine.connect() as con:
-        sqlstatement = "SELECT DISTINCT City FROM corona_cases WHERE City is not null Order By City"
+        sqlstatement = "SELECT DISTINCT City FROM corona_cases WHERE City is not null"
+        if country != '':
+            sqlstatement += " AND Country like '" + country + "'"
+        if state != '':
+            sqlstatement += " AND State like '" + state + "'"
+        if city != '':
+            sqlstatement += " AND City like '" + city + "'"
+        sqlstatement += " Order By City"
         print(sqlstatement)
         rs = con.execute(sqlstatement)
 
